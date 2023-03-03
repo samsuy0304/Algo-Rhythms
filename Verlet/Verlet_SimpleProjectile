@@ -1,0 +1,50 @@
+import matplotlib.pyplot as plt
+import math
+
+#Data 
+v = 10
+T = 0
+g = 9.8
+
+# Angles 
+O1 = math.radians(30)
+
+#Positions vector lists
+X1 = []
+Y1 = []
+X2 = []
+Y2 = []
+X3 = []
+Y3 = []
+
+while v*T*math.sin(math.radians(30)) - (1/2)*g*(T**2)>=0:
+    
+    x1 = v*T*math.cos(math.radians(30))
+    y1= v*T*math.sin(math.radians(30)) - (1/2)*g*(T**2)
+    X1.append(x1)
+    Y1.append(y1)
+    T+=0.05
+plt.plot(X1,Y1,'ro')
+
+T =0
+while v*T*math.sin(math.radians(60)) - (1/2)*g*(T**2)>=0:
+    
+    x2 = v*T*math.cos(math.radians(60))
+    y2= v*T*math.sin(math.radians(60)) - (1/2)*g*(T**2)
+    X2.append(x2)
+    Y2.append(y2)
+    T+=0.05
+plt.plot(X2,Y2,'go')
+
+T =0
+while v*T*math.sin(math.radians(45)) - (1/2)*g*(T**2)>=0:
+    
+    x3 = v*T*math.cos(math.radians(45))
+    y3= v*T*math.sin(math.radians(45)) - (1/2)*g*(T**2)
+    X3.append(x3)
+    Y3.append(y3)
+    T+=0.05
+plt.plot(X3,Y3,'bo')
+
+plt.savefig('ProjectileMotion.jpg')
+plt.show()
