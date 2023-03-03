@@ -1,3 +1,5 @@
+import math
+import matplotlib.pyplot as plt
 # Define constants
 v = 10  # m/s
 g = 9.8  # m/s^2
