@@ -1,0 +1,82 @@
+# Define constants
+v = 10  # m/s
+g = 9.8  # m/s^2
+m = 1  # kg
+Cd = 0.47  # drag coefficient for a sphere
+r = 0.1  # radius of sphere
+A = math.pi*r**2  # cross-sectional area of sphere
+
+
+# Calculate initial velocity components
+O1 = math.radians(30)
+v0x = v * math.cos(O1)
+v0y = v * math.sin(O1)
+
+# Initialize position, velocity, and acceleration
+x = 0
+y = 0
+vx = v0x
+vy = v0y
+ax = 0
+ay = -g
+
+
+# Time step
+dt = 0.05
+
+# Lists to store position and time
+X3 = []
+Y3 = []
+t = 0
+
+while y >= 0:
+    # Store position
+    X3.append(x)
+    Y3.append(y)
+
+    # Air density
+    alt = y  # altitude in meters
+    T = 15 - 0.0065*alt  # temperature in Celsius
+    P = 101325*(1-2.25577*10**-5*alt)**5.25588  # pressure in Pa
+    rho = P/(287*(T+273.15))  # air density in kg/m^3
+
+    # Update position using Velocity Verlet algorithm
+    x += vx*dt + 0.5*ax*dt*dt
+    y += vy*dt + 0.5*ay*dt*dt
+
+    # Update velocity using Velocity Verlet algorithm
+    vx_new = vx + 0.5*ax*dt
+    vy_new = vy + 0.5*ay*dt
+
+    
+
+
+    # Calculate drag coefficient based on air density
+    rho = P/(287*(T+273.15))  # air density in kg/m^3
+    k = (1/2)*rho*Cd*A
+
+    # Calculate acceleration due to drag
+    F_drag_x = -k*v*math.sqrt(vx*vx + vy*vy)*vx
+    F_drag_y = -k*v*math.sqrt(vx*vx + vy*vy)*vy
+    ax_new = F_drag_x/m
+    ay_new = F_drag_y/m - g
+
+    # Update velocity using Velocity Verlet algorithm
+    vx = vx_new + 0.5*ax_new*dt
+    vy = vy_new + 0.5*ay_new*dt
+
+    # Update acceleration
+    ax = ax_new
+    ay = ay_new
+
+    # Update time
+    t += dt
+
+# Plot results
+plt.plot(X3, Y3, 'bo')
+
+# Calculate range
+range = X3[-1]
+
+# Print range
+print("Range: {:.2f} meters".format(range))
