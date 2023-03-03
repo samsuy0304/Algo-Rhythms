@@ -12,6 +12,7 @@ So what are you waiting for? Browse our repository and discover the algorithms t
 
 * Dijkstra's algorithm
 * Verlet algorithm
+* Sorting algorithms
 
 ## Contributing
 
