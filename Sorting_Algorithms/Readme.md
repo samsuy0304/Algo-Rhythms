@@ -1,4 +1,4 @@
-#Sorting Algorithms Module
+# Sorting Algorithms Module
 ## Description
 The MySort module is a collection of sorting algorithms implemented in the MySort class. This module includes popular sorting algorithms such as Bubble Sort, Insertion Sort, Quicksort, and the default Python sort. Whether you need a simple sorting solution or a more advanced algorithm, this module has you covered.
 
