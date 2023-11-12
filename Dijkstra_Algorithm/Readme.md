@@ -1,40 +1,61 @@
-# Dijkstra's Algorithm in Python
+# Graph Visualizer with Dijkstra's Algorithm
 
-This repository contains a Python implementation of Dijkstra's algorithm for finding the shortest path in a weighted graph. The implementation uses a priority queue to efficiently explore the graph and update the distances to each node.
+This project implements a graph visualizer using NetworkX and Matplotlib, incorporating Dijkstra's algorithm to find the shortest path between two nodes in a randomly generated graph.
 
-## Requirements
+## Table of Contents
 
-This implementation requires Python 3 and the `heapq` module,
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Example](#example)
+
+## Introduction
+
+This Python project showcases the implementation of a graph visualizer with Dijkstra's algorithm. It uses the NetworkX library for graph representation and Matplotlib for visualization.
+
+## Features
+
+- Random graph generation with customizable nodes and edge weights.
+- Dijkstra's algorithm for finding the shortest path between two nodes.
+- Visualization of the graph with node colors indicating distances.
+
+## Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/graph-visualizer.git
 
 ## Usage
 
-The `dijkstra` function in `dijkstra.py` takes a graph represented as a dictionary of dictionaries, where the keys are nodes and the values are dictionaries of neighbors and their corresponding edge weights. Here is an example graph:
+Open the `dijkstra.py` file in your preferred Python environment.
 
-```python
-graph = {
-    'A': {'B': 3, 'C': 4},
-    'B': {'A': 3, 'C': 2, 'D': 6},
-    'C': {'A': 4, 'B': 2, 'D': 1},
-    'D': {'B': 6, 'C': 1}
-}
+Customize the nodes list to define the nodes in your graph.
+
+Run the script:
+`python3 dikjkshit.py`
+
+## Example
 ```
+# Define nodes for the graph
+nodes = ['A', 'B', 'C', 'D', 'E', 'F']
 
-To find the shortest path from node 'A' to node 'D', you can call the dijkstra function like this:
+# Create an instance of the GraphVisualizer class
+graph_visualizer = GraphVisualizer(nodes)
 
-```python
-from dijkstra import dijkstra
+# Perform Dijkstra's algorithm
+start_node = 'A'
+end_node = 'F'
+distances = graph_visualizer.dijkstra(start_node, end_node)
 
-distances = dijkstra(graph, 'A', 'D')
-print(distances['D']) # prints 5
+# Check if the destination node was reached
+if isinstance(distances, dict) and distances.get(end_node, float('inf')) == float('inf'):
+    print(f"No path from {start_node} to {end_node}")
+else:
+    # Visualize the graph
+    graph_visualizer.visualize_graph(distances)
+
+    # Print the distances
+    print(distances)
 ```
-
-
-If you omit the end parameter, the function will return a dictionary of distances to all other nodes:
-
-```python
-distances = dijkstra(graph, 'A')
-print(distances) # prints {'A': 0, 'B': 3, 'C': 4, 'D': 5}
-```
-
-# Acknowledgments
-This implementation was inspired by the [Dijkstra's Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) article on Wikipedia.
