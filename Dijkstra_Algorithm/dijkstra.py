@@ -1,84 +1,94 @@
+from matplotlib.backend_bases import GraphicsContextBase
 import heapq
 import networkx as nx
 import matplotlib.pyplot as plt
 import random
 
-def dijkstra(graph, start, end=None):
-    # Initialize distances and visited set
-    distances = {node: float('inf') for node in graph}
-    distances[start] = 0
-    visited = set()
+class GraphVisualizer:
+    def __init__(self, nodes):
+        self.nodes = nodes
+        self.graph = self.generate_random_graph()
+
+    def generate_random_graph(self):
+        graph = {}
+        for node in self.nodes:
+            neighbors = {}
+            for neighbor in random.sample(self.nodes, random.randint(1, 5)):
+                if neighbor != node:
+                    neighbors[neighbor] = random.randint(1, 10)
+            graph[node] = neighbors
+        return graph
+
+    def dijkstra(self, start, end=None):
+        distances = {node: float('inf') for node in self.graph}
+        distances[start] = 0
+        visited = set()
+        pq = [(0, start)]
+
+        while pq:
+            distance, node = heapq.heappop(pq)
+
+            if node in visited:
+                continue
+
+            visited.add(node)
+
+            if node == end:
+                return distances[node]
+
+            for neighbor, weight in self.graph[node].items():
+                new_distance = distance + weight
+                if new_distance < distances[neighbor]:
+                    distances[neighbor] = new_distance
+                    heapq.heappush(pq, (new_distance, neighbor))
+
+        if end is not None:
+            return float('inf')
+
+        return distances
+
+    def visualize_graph(self, distances):
+        G = nx.Graph()
+
+        for node in self.graph:
+            G.add_node(node)
+
+        for node in self.graph:
+            for neighbor, weight in self.graph[node].items():
+                G.add_edge(node, neighbor, weight=weight)
+
+        if isinstance(distances, dict):
+            node_colors = [distances[node] for node in G.nodes()]
+        else:
+            # Handle the case where distances is not a dictionary (e.g., when no path is found)
+            node_colors = [0] * len(G.nodes())
+
+        pos = nx.spring_layout(G)
+        nx.draw_networkx_nodes(G, pos, node_color=node_colors, cmap='cool', node_size=500)
+        nx.draw_networkx_edges(G, pos, width=1)
+        nx.draw_networkx_labels(G, pos, font_size=20, font_family='sans-serif')
+        nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=15)
+        plt.axis('off')
+        plt.show()
+
+
+if __name__ == "__main__":
+    nodes = ['A', 'B', 'C', 'D', 'E', 'F']
     
-    # Create a priority queue and add the starting node
-    pq = [(0, start)]
-    
-    # Loop until the queue is empty
-    while pq:
-        # Pop the node with the smallest distance
-        distance, node = heapq.heappop(pq)
-        
-        # Skip if the node has already been visited
-        if node in visited:
-            continue
-        
-        # Mark the node as visited
-        visited.add(node)
-        
-        # Check if the destination node has been reached
-        if node == end:
-            return distances[node]
-        
-        # Update the distances of the node's neighbors
-        for neighbor, weight in graph[node].items():
-            new_distance = distance + weight
-            if new_distance < distances[neighbor]:
-                distances[neighbor] = new_distance
-                heapq.heappush(pq, (new_distance, neighbor))
-    
-    # If an end node was specified, but not reached, there is no path
-    if end is not None:
-        return float('inf')
-    
-    # If no end node was specified, return all distances
-    return distances
- 
+    Graph = GraphVisualizer(nodes)
+    # Perform Dijkstra's algorithm
+    start_node = 'A'
+    end_node = 'F'
+    distances = Graph.dijkstra(start_node, end_node)
 
-##########Graphing
+    # Check if the destination node was reached
+    if isinstance(distances, dict) and distances.get(end_node, float('inf')) == float('inf'):
+        print(f"No path from {start_node} to {end_node}")
+    else:
+        # Visualize the graph
+        Graph.visualize_graph(distances)
 
-# Create a random graph with 20 nodes
-graph = {}
-nodes = ['A', 'B', 'C', 'D', 'E', 'F']
-for node in nodes:
-    neighbors = {}
-    for neighbor in random.sample(nodes, random.randint(1, 5)):
-        if neighbor != node:
-            neighbors[neighbor] = random.randint(1, 10)
-    graph[node] = neighbors
+        # Print the distances
+        print(distances)
 
-# Create a networkx graph object
-G = nx.Graph()
 
-# Add nodes to the graph
-for node in graph:
-    G.add_node(node)
-
-# Add edges to the graph
-for node in graph:
-    for neighbor, weight in graph[node].items():
-        G.add_edge(node, neighbor, weight=weight)
-
-# Calculate the shortest path using Dijkstra's algorithm
-distances = dijkstra(graph, 'A')
-
-# Color the nodes based on their distance from the starting node
-node_colors = [distances[node] for node in G.nodes()]
-
-# Draw the graph
-pos = nx.spring_layout(G)
-nx.draw_networkx_nodes(G, pos, node_color=node_colors, cmap='cool', node_size=500)
-nx.draw_networkx_edges(G, pos, width=1)
-nx.draw_networkx_labels(G, pos, font_size=20, font_family='sans-serif')
-nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_size=15)
-plt.axis('off')
-plt.show()
-print(distances)
