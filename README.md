@@ -20,5 +20,5 @@ Do you have an algorithm you'd like to contribute to our repository? Great! We l
 
 ## Contact
 
-If you have any questions or comments, please feel free to reach out to us at suyash.sakhare007@gmail.com. We would love to hear from you!
+If you have any questions or comments, please feel free to reach out to me [here](https://suyashsakhare.wordpress.com/). I would love to hear from you!
 
