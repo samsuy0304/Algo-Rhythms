@@ -10,7 +10,7 @@ The basic idea behind Monte Carlo integration is to approximate an integral by g
 
 The Monte Carlo integration formula for a one-dimensional integral is given by:
 
-$ \int_{a}^{b} f(x) \,dx \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i) $
+$ \[ \int_{a}^{b} f(x) \,dx \approx \frac{1}{N} \sum_{i=1}^{N} f(x_i) \] $
 
 where:
 - $N$ is the number of random samples,
